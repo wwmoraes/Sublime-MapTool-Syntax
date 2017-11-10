@@ -1,0 +1,158 @@
+%YAML 1.2
+---
+name: MapTool Macro
+file_extensions: [rpmacro]
+scope: source.macro.rptool
+
+contexts:
+  main:
+    - include: "Packages/HTML/HTML.sublime-syntax"
+    - include: macro
+
+  macro:
+    - match: \[
+      scope: entity.name.tag, punctuation.section.brackets.begin
+      push: macro-content
+    - match: \]
+      scope: invalid.illegal.stray-brackets-end
+
+  macro-content:
+    - clear_scopes: true
+    - meta_content_scope: meta.brackets
+    - include: macro-options
+    - include: operators
+    - include: keywords
+    - include: constants
+    - include: codeblock
+    - include: support-functions
+    - include: json-functions
+    - include: support-types
+    - include: support-variables
+    - include: numbers
+    - include: rolls
+    - include: parameters
+    - include: variables
+    - include: string-single
+    - include: string-double
+    - include: "Packages/HTML/HTML.sublime-syntax"
+    - match: \]
+      scope: entity.name.tag, punctuation.section.brackets.end
+      pop: true
+    - include: macro
+
+# Grouping contexts
+  macro-options:
+    - match: (?<=\[)\b(e|expanded|g|gm|gt|gmtt|h|hide|hidden|r|result|s|self|st|selftt|t|tooltip|u|unformatted|w|whisper|c|count)\b(?=[,:])
+      scope: support.constant
+
+  operators:
+    - match: (?<![\=\<\>\!])\=(?!\=)
+      scope: keyword.operator.assignment
+    - match: ([\-\*\/\+])
+      scope: keyword.operator.arithmetic
+    - match: (\|\||\&\&|\<\=|\>\=|\!\=|\=\=)|[\<\>](?!\=)
+      scope: keyword.operator.logical
+    - match: >-
+        [\:\,]
+      scope: keyword.operator, punctuation.separator
+    - match: \.
+      scope: keyword.operator, punctuation.acessor
+    - match: \;
+      scope: keyword.operator, punctuation.terminator
+    - match: \(
+      scope: entity.name.tag, punctuation.section.parens.begin
+      push: parens
+    - match: \)
+      scope: invalid.illegal.stray-parens-end
+
+  keywords:
+    - match: \b(code|for|foreach|if|switch|while|default)\b
+      scope: keyword.control
+
+  constants:
+    - match: \b(true|false)\b
+      scope: constant.language
+
+  codeblock:
+    - match: \{
+      scope: entity.name.tag, punctuation.section.block.begin
+      push: braces
+    - match: \}
+      scope: invalid.illegal.stray-brace-end
+
+  support-functions:
+    - match: \b(abort|abs|absolutevalue|absolutevalue|add|addAllNPCsToInitiative|addAllPCsToInitiative|addAllToInitiative|addToInitiative|arg|argCount|assert|average|avg|band|bitwiseand|bitwisenot|bitwiseor|bitwisexor|bnot|bor|bringToFront|broadcast|bxor|canSeeToken|ceil|ceiling|clearLights|closeDialog|closeFrame|concat|copyToken|countStrProp|countsuccess|createMacro|currentToken|d|decode|defineFunction|deleteStrProp|deselectTokens|dialog|dice|divide|drawVBL|drop|encode|endsWith|eraseVBL|eval|evalMacro|execLink|execMacro|explode|explodingSuccess|exposeFOW|exposePCOnlyArea|f|findToken|floor|formatStrProp|frame|fudge|getAllMapNames|getAllPlayerNames|getAllPropertyNames|getBar|getCurrentInitiative|getCurrentMapName|getDistance|getDistanceToXY|getExposedTokenNames|getExposedTokens|getFindCount|getGMName|getGMNotes|getGroup|getGroupCount|getGroupEnd|getGroupStart|getHalo|getImage|getImpersonated|getImpersonatedName|getInfo|getInitiative|getInitiativeHold|getInitiativeList|getInitiativeRound|getInitiativeToken|getLabel|getLastPath|getLayer|getLibProperty|getLights|getMacroButtonIndex|getMacroCommand|getMacroGroup|getMacroIndexes|getMacroLocation|getMacroName|getMacroProps|getMacros|getMatchingLibProperties|getMatchingProperties|getMoveCount|getName|getNotes|getNPC|getNPCNames|getOwned|getOwnedNames|getOwnerOnlyVisible|getOwners|getPC|getPCNames|getPlayerName|getProperty|getPropertyDefault|getPropertyNames|getPropertyNamesRaw|getPropertyType|getRawProperty|getSelected|getSelectedNames|getSightType|getSize|getSpeech|getSpeechNames|getState|getStateImage|getStrProp|getTokenDrawOrder|getTokenFacing|getTokenGMName|getTokenHalo|getTokenHandout|getTokenHeight|getTokenImage|getTokenLabel|getTokenNames|getTokenPortrait|getTokens|getTokenShape|getTokenStates|getTokenWidth|getTokenX|getTokenY|getVBL|getVisible|getVisibleMapNames|getVisibleTokenNames|getVisibleTokens|getWithState|getWithStateNames|getZoom|goto|hasImpersonated|hasLightSource|hasMacro|hasProperty|hasSight|hero|herobody|herostun|hex|hypot|hypotenuse|if|indexKeyStrProp|indexOf|indexValueStrProp|initiativeSize|input|isBarVisible|isDialogVisible|isFrameVisible|isFunctionDefined|isGM|isNPC|isNumber|isOwnedByAll|isOwner|isPC|isPropertyEmpty|isSnapToGrid|isTrusted|isVisible|keep|lastIndexOf|length|listAppend|listContains|listCount|listDelete|listFind|listFormat|listGet|listInsert|listReplace|listSort|ln|log|log10|lower|macro|macroLink|macroLinkText|matches|max|mean|median|min|mod|movedOverPoints|movedOverToken|moveToken|moveTokenFromMap|moveTokenToMap|multiply|nextInitiative|number|oldFunction|openTest|pow|power|removeAllFromInitiative|removeAllNPCsFromInitiative|removeAllPCsFromInitiative|removeFromInitiative|removeMacro|removeToken|removeTokenFacing|replace|reroll|resetFrame|resetProperty|roll|round|selectTokens|sendToBack|set|setAllStates|setBar|setBarVisible|setCurrentInitiative|setCurrentMap|setGMName|setGMNotes|setHalo|setHasSight|setInitiative|setInitiativeHold|setInitiativeRound|setLabel|setLayer|setLibProperty|setLight|setMacroCommand|setMacroProps|setName|setNotes|setNPC|setOwner|setOwnerOnlyVisible|setPC|setProperty|setPropertyType|setSightType|setSize|setSpeech|setState|setStrProp|setTokenDrawOrder|setTokenFacing|setTokenGMName|setTokenHandout|setTokenImage|setTokenLabel|setTokenPortrait|setTokenShape|setViewArea|setVisible|setZoom|sortInitiative|sqr|sqrt|square|squareroot|sr4|sr4e|startsWith|strfind|strformat|string|stringToList|strPropFromVars|substring|subtract|success|sum|switchToken|table|tableImage|tbl|tblImage|trim|u|ubiquity|upper|varsFromStrProp)\b(?=\()
+      scope: support.function
+
+  json-functions:
+    - match: \b(?<=json\.)(append|contains|count|difference|equals|evaluate|fields|fromList|fromStrProp|get|indent|indexOf|intersection|isEmpty|isSubset|length|merge|remove|removeAll|reverse|set|shuffle|sort|toList|toStrProp|type|union|unique)\b(?=\()
+      scope: support.function
+
+  support-types:
+    - match: \b(json)(?=\.)\b
+      scope: support.type
+
+  support-variables:
+    - match: \b(?:(bar|macro|roll|state|token|tokens(?=\.[a-zA-Z]+))|(?<=bar\.)(name)|(?<=macro\.)(return|args)|(?<=roll\.)(count|result)|(?<=state\.)(name)|(?<=token\.)(gm_name|halo|init|initHold|label|name|visible)|(?<=tokens\.)(denyMove|moveCount))\b
+      scope: variable.language
+
+  numbers:
+    - match: \b([0-9]+|[0-9]+\.[0-9]+)\b
+      scope: constant.numeric
+
+  rolls:
+    - match: \b([0-9]+)(d[0-9]+|d[fu]|sr4)([dkrsg][0-9]+)?([eohb])?([dkrsg][0-9]+)?([eohb])?\b
+      scope: support.constant
+
+  parameters:
+    - match: (?<=[\(\,])[ ]*?\b([0-9.]+[a-zA-Z0-9_.]+?|[a-zA-Z0-9_.]+?[0-9]+|[a-zA-Z0-9_.]+?[0-9]+[a-zA-Z0-9_.]+?|[0-9]+[a-zA-Z0-9_.]+?[0-9]+)\b[ ]*(?=[\)\,])
+      scope: variable.parameter
+
+  variables:
+    - match: (?:[a-z]+:{1} ?)?([a-zA-Z_.]+)(?= ?=?)
+      scope: variable.other
+
+  string-single:
+    - match: "'"
+      scope: punctuation.definition.string.begin
+      push: string-single-content
+    - match: "'"
+      scope: invalid.illegal.stray-quote-end
+
+  string-double:
+    - match: '"'
+      scope: punctuation.definition.string.begin
+      push: string-double-content
+    - match: '"'
+      scope: invalid.illegal.stray-quote-end
+
+# # Stack contexts
+  braces:
+    - meta_content_scope: meta.braces
+    - match: \}
+      scope: entity.name.tag, punctuation.section.block.end
+      pop: true
+    - include: main
+
+  parens:
+    - meta_content_scope: meta.parens
+    - match: \)
+      scope: entity.name.tag, punctuation.section.parens.end
+      pop: true
+    - include: macro-content
+
+  string-single-content:
+    - meta_scope: string.quoted.single
+    - match: \\.
+      scope: constant.character.escape
+    - match: "'"
+      scope: punctuation.definition.string.end
+      pop: true
+
+  string-double-content:
+    - meta_scope: string.quoted.double
+    - match: \\.
+      scope: constant.character.escape
+    - match: '"'
+      scope: punctuation.definition.string.end
+      pop: true
