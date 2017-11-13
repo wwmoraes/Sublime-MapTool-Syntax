@@ -15,8 +15,12 @@ Does recognize pretty much everything inside the macro tags, with in-place HTML 
 You can easily install through the Command Palette:
 
  * Open the Command Palette... (<kbd>CTRL</kbd>+<kbd>SHIFT</kbd>+<kbd>P</kbd> on Windows/Linux or **⌘⇧P** on Mac)
- * Type in `Package Control: Install Package` and hit <kbd>Enter</kbd> (just `install package` will do too)
+ * Type in `Package Control: Install Package` and hit <kbd>Enter</kbd> (just `install package` will do too) 
+ 
+![install package on Command Palette](https://i.imgur.com/ThaMg2p.png)
  * Type in `MapTool Syntax` and hit <kbd>Enter</kbd>
+ 
+![MapTool Syntax Package](https://i.imgur.com/2MgIKH4.png)
  * Profit!
 
 ## or grab your copy and install manually
